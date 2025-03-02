@@ -1,6 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-from model.persistencia import Persistencia
+from models.persistencia import Persistencia
 
 class estatisticas:
     def gerar_grafico():
