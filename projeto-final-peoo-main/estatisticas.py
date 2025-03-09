@@ -1,28 +1,17 @@
-import streamlit as st
 import matplotlib.pyplot as plt
-from models.persistencia import Persistencia
+import streamlit as st
 
-class estatisticas:
-    def gerar_grafico():
-        persistencia = Persistencia("dados/agendamentos.json")
-        agendamentos = persistencia.ler_dados()
-    
-        contagem = {}
-        for agendamento in agendamentos:
-            data = agendamento["data"]
-            contagem[data] = contagem.get(data, 0) + 1
-    
-        fig, ax = plt.subplots()
-        ax.bar(contagem.keys(), contagem.values())
-        ax.set_xlabel("Data")
-        ax.set_ylabel("Quantidade de Apresentações")
-        ax.set_title("Quantidade de Apresentações por Dia")
-    
-        st.pyplot(fig)
-    
-    def mostrar_estatisticas():
-        st.title("Estatísticas do Sistema")
-        gerar_grafico()
-    
-    if __name__ == "__main__":
-        mostrar_estatisticas()
+def gerar_grafico_exemplo():
+    fig, ax = plt.subplots()
+    # Exemplo de dados:
+    ax.plot([1, 2, 3, 4, 5], [1, 4, 9, 16, 25])
+    ax.set_title("Exemplo de Gráfico")
+    return fig
+
+def mostrar_grafico():
+    st.title("Gráfico de Exemplo")
+    fig = gerar_grafico_exemplo()
+    st.pyplot(fig)
+
+if __name__ == "__main__":
+    mostrar_grafico()
