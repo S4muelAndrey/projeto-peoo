@@ -8,6 +8,7 @@ from templates.manterbandaUI import ManterBandaUI
 from templates.mantercidadeUI import ManterCidadeUI
 from templates.manterrepresentanteUI import ManterRepresentanteUI
 from templates.registerUI import RegisterUI
+from templates.estatisticasAdmin import main as EstatisticasAdminMain  # Importa a função main da página de estatísticas do admin
 import streamlit as st
 import time
 
@@ -34,13 +35,14 @@ class Index:
             elif menu == "Registrar":
                 RegisterUI.main()
         else:
-            # Verifica o tipo de usuário para exibir o menu adequado
+            # Se for admin, incluir a opção "Estatísticas"
             if st.session_state.user_type == "Admin":
                 menu = st.sidebar.selectbox("Menu", [
                     "Manter Cidade",
                     "Manter Banda",
                     "Manter Apresentação",
-                    "Manter Representante"
+                    "Manter Representante",
+                    "Estatísticas"
                 ], key="menu-sidebar")
                 if menu == "Manter Cidade":
                     ManterCidadeUI.main()
@@ -50,6 +52,8 @@ class Index:
                     ManterApresentacaoUI.main()
                 elif menu == "Manter Representante":
                     ManterRepresentanteUI.main()
+                elif menu == "Estatísticas":
+                    EstatisticasAdminMain()
             else:
                 menu = st.sidebar.selectbox("Menu", [
                     "Abrir Agenda",
