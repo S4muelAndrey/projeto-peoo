@@ -18,7 +18,7 @@ class AbrirAgendaUI:
         if st.button("Abrir Agenda"):
             if data and hora_inicio and hora_fim and intervalo:
                 try:
-                    View.horario_abrir_agenda(data, hora_inicio, hora_fim, int(intervalo))
+                    View.horario_abrir_agenda(data, hora_inicio, hora_fim, int(intervalo)) # onde provavelmente está dando erro
                     st.success("Agenda aberta com sucesso!")
                     time.sleep(2)
                     st.rerun()
