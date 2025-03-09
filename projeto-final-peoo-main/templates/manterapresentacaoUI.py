@@ -18,11 +18,17 @@ class ManterApresentacaoUI:
         if not apresentacoes:
             st.write("Nenhuma apresentação cadastrada")
         else:
-            df = pd.DataFrame(apresentacoes)
+            # Converte a lista de objetos em dicionários para exibição
+            dados = [ {"id": a.id, 
+                        "id_banda": a.id_banda, 
+                        "data": a.data.strftime("%d/%m/%Y %H:%M"), 
+                        "local": a.local, 
+                        "confirmado": a.confirmado} 
+                      for a in apresentacoes ]
+            df = pd.DataFrame(dados)
             st.dataframe(df)
 
     def inserir():
-        # Para inserir, seleciona uma banda previamente cadastrada
         bandas = View.banda_listar()
         if not bandas:
             st.error("Nenhuma banda cadastrada. Cadastre uma banda primeiro.")
@@ -52,17 +58,18 @@ class ManterApresentacaoUI:
         if not apresentacoes:
             st.write("Nenhuma apresentação cadastrada")
         else:
-            opcoes = {f"{a['id']} - Banda {a['id_banda']} em {a['data']}": a for a in apresentacoes}
+            opcoes = {f"{a.id} - Banda {a.id_banda} em {a.data.strftime('%d/%m/%Y %H:%M')}": a for a in apresentacoes}
             opcao = st.selectbox("Selecione a apresentação para atualizar", list(opcoes.keys()))
             apresentacao = opcoes[opcao]
-            data_str = st.text_input("Informe a nova data e horário (dd/mm/aaaa HH:MM)", apresentacao["data"])
-            local = st.text_input("Informe o novo local", apresentacao["local"])
-            confirmado = st.checkbox("Apresentação confirmada", value=apresentacao["confirmado"])
+            data_str = st.text_input("Informe a nova data e horário (dd/mm/aaaa HH:MM)", apresentacao.data.strftime("%d/%m/%Y %H:%M"))
+            local = st.text_input("Informe o novo local", apresentacao.local)
+            # Adicionamos a chave única aqui:
+            confirmado = st.checkbox("Apresentação confirmada", value=apresentacao.confirmado, key=f"confirmado_{apresentacao.id}")
             if st.button("Atualizar"):
                 try:
                     data = datetime.strptime(data_str, "%d/%m/%Y %H:%M")
                     novos_dados = {"data": data.strftime("%d/%m/%Y %H:%M"), "local": local, "confirmado": confirmado}
-                    View.apresentacao_atualizar(apresentacao["id"], novos_dados)
+                    View.apresentacao_atualizar(apresentacao.id, novos_dados)
                     st.success("Apresentação atualizada com sucesso")
                     time.sleep(2)
                     st.rerun()
@@ -74,11 +81,11 @@ class ManterApresentacaoUI:
         if not apresentacoes:
             st.write("Nenhuma apresentação cadastrada")
         else:
-            opcoes = {f"{a['id']} - Banda {a['id_banda']} em {a['data']}": a for a in apresentacoes}
+            opcoes = {f"{a.id} - Banda {a.id_banda} em {a.data.strftime('%d/%m/%Y %H:%M')}": a for a in apresentacoes}
             opcao = st.selectbox("Selecione a apresentação para exclusão", list(opcoes.keys()))
             apresentacao = opcoes[opcao]
             if st.button("Excluir"):
-                View.apresentacao_excluir(apresentacao["id"])
+                View.apresentacao_excluir(apresentacao.id)
                 st.success("Apresentação excluída com sucesso")
                 time.sleep(2)
                 st.rerun()
