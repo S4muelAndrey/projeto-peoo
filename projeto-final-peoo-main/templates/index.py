@@ -14,27 +14,28 @@ import time
 class Index:
     @staticmethod
     def main():
+        # Inicializa as variáveis de sessão se não existirem
         if 'authenticated' not in st.session_state:
             st.session_state.authenticated = False
         if 'user_type' not in st.session_state:
             st.session_state.user_type = None
         if 'user_name' not in st.session_state:
             st.session_state.user_name = ''
+        if "login_sucesso" not in st.session_state:
+            st.session_state["login_sucesso"] = False
 
-        if "login_sucesso" not in st.session_state or not st.session_state["login_sucesso"]:
+        if not st.session_state["login_sucesso"]:
             menu = st.sidebar.selectbox("Menu", [
                 "Login",
                 "Registrar"
             ], key="menu-sidebar")
-
             if menu == "Login":
                 LoginUI.main()
             elif menu == "Registrar":
                 RegisterUI.main()
         else:
-            # Verifica o tipo de usuário logado
+            # Verifica o tipo de usuário para exibir o menu adequado
             if st.session_state.user_type == "Admin":
-                # Só o admin vê as opções de gerenciamento
                 menu = st.sidebar.selectbox("Menu", [
                     "Manter Cidade",
                     "Manter Banda",
@@ -50,7 +51,6 @@ class Index:
                 elif menu == "Manter Representante":
                     ManterRepresentanteUI.main()
             else:
-                # Usuários normais (Banda ou Representante) veem as opções do sistema
                 menu = st.sidebar.selectbox("Menu", [
                     "Abrir Agenda",
                     "Confirmar Show",
@@ -65,7 +65,6 @@ class Index:
                     AgendaShowUI.main()
                 elif menu == "Agenda de Shows":
                     AgendaShowsUI.main()
-
             if st.sidebar.button("Sair"):
                 st.session_state["login_sucesso"] = False
                 st.session_state.clear()
