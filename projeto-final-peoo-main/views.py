@@ -19,6 +19,13 @@ class View:
         _usuarios.inserir(usuario)
 
     @staticmethod
+    def horario_abrir_agenda(data: str, hora_inicio: str, hora_fim: str, intervalo: int):
+        # Implementar a lógica para abrir a agenda aqui.
+        # Exemplo: salvar essas informações em um arquivo, atualizar uma agenda etc.
+        print(f"Abrindo agenda para {data} das {hora_inicio} às {hora_fim} com intervalo de {intervalo} minutos")
+        # Retorne algo ou apenas faça a agenda "abrir"
+
+    @staticmethod
     def usuario_listar():
         return _usuarios.listar()
 
