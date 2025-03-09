@@ -23,7 +23,7 @@ class AgendaShowUI:
         confirmado = st.checkbox("Confirmar Show?", key="agenda_show_confirmado")
         if st.button("Agendar Show"):
             try:
-                from datetime import datetime
+                # Remova a importação interna
                 data = datetime.strptime(data_str, "%d/%m/%Y %H:%M")
                 View.apresentacao_inserir(banda["id"], data, local, confirmado)
                 st.success("Show agendado!")
@@ -31,4 +31,3 @@ class AgendaShowUI:
                 st.rerun()
             except Exception as e:
                 st.error(f"Erro: {str(e)}")
-                
