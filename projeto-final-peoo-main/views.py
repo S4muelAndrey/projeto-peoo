@@ -4,6 +4,8 @@ from models.representante import Representante, Representantes
 from models.banda import Banda, Bandas
 from models.apresentacao import Apresentacao, Apresentacoes
 from models.cidade import Cidade, Cidades
+from models.apresentacao import Apresentacao
+from models.persistencia import Persistencia
 from datetime import datetime
 
 _bandas = Bandas("bandas.json")
@@ -108,6 +110,11 @@ class View:
     def apresentacao_inserir(id_banda: int, data: datetime, local: str, confirmado: bool = False):
         apresentacao = Apresentacao(0, id_banda, data, local, confirmado)
         _apresentacoes.inserir(apresentacao)
+        persistencia_agendamentos = Persistencia("dados/agendamentos.json")
+        agendamentos = persistencia_agendamentos.abrir()  # Lê os agendamentos atuais (lista)
+        agendamentos.append(apresentacao.to_dict())
+        persistencia_agendamentos.salvar(agendamentos)
+
 
     @staticmethod
     def apresentacao_listar():
